@@ -36,7 +36,22 @@ BOARD_KERNEL_PAGESIZE    := 4096
 BOARD_KERNEL_TAGS_OFFSET := 0x01E00000
 BOARD_RAMDISK_OFFSET     := 0x02000000
 
-BOARD_KERNEL_CMDLINE := androidboot.hardware=angler androidboot.console=ttyHSL0 msm_rtb.filter=0x37 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 boot_cpus=0-3
+TARGET_KERNEL_SOURCE := kernel/huawei/leanKernel
+TARGET_KERNEL_CONFIG := lk_defconfig
+BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
+
+# Kernel Toolchain
+KERNEL_TOOLCHAIN := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_OS)-x86/aarch64/aarch64-linux-android-4.9-kernel/bin
+KERNEL_TOOLCHAIN_PREFIX := aarch64-linux-android-
+
+# Uber Optimizations
+export CLANG_O3 := true
+export STRICT_ALIASING := false
+export KRAIT_TUNINGS := false
+export GRAPHITE_OPTS := false
+export ENABLE_GCCONLY := true
+
+BOARD_KERNEL_CMDLINE := androidboot.hardware=angler androidboot.selinux=permissive androidboot.console=ttyHSL0 msm_rtb.filter=0x37 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 boot_cpus=0-7
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset $(BOARD_RAMDISK_OFFSET) --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
 
 BOARD_USES_ALSA_AUDIO := true
